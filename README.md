@@ -1,129 +1,165 @@
-### Deploying the Website
+# Portfolio Website with Admin Panel
 
-The project is ready for immediate deployment:
+This is a full-stack portfolio website featuring:
+- Modern Next.js frontend with admin panel
+- Supabase database and authentication
+- Image upload system
+- Content management for projects and blog posts
+- Responsive design with Tailwind CSS
 
-#### 1. **Deploy to Vercel** (Recommended)
+## Quick Setup
 
-**Live URL**: https://your-portfolio-site.vercel.app
-
-**Repository**: https://github.com/yourusername/portfolio-website
-
-1. Push the code to your GitHub repository
-2. Connect your GitHub to Vercel
-3. Vercel will auto-deploy with the `vercel.json` configuration
-
-#### 2. **Deploy to Netlify**
-
-1. Push code to GitHub
-2. Connect Netlify to your repository
-3. Set build command: `npm run build`
-4. Set publish directory: `.next`
-
-#### 3. **Contact Form Setup**
-
-The contact form uses Formspree for email delivery. If you want functional email:
-
-1. Sign up at [formspree.io](https://formspree.io/)
-2. Get your form ID
-3. Replace `'https://formspree.io/f/xeqyejjv'` in `app/contact/page.tsx` with your endpoint
-4. Or set `FORMSPREE_FORM_ID` environment variable and update the code
-
-**Sample Form ID**: `xeqyejjv` (from https://formspree.io/f/xeqyejjv)
-
-#### Environment Variables
-
-Copy `.env.example` to `.env.local` and add your variables:
+### 1. Install Dependencies
 
 ```bash
-FORMSPREE_FORM_ID=your-actual-form-id
-   ```
-
-   Open [http://localhost:3000](http://localhost:3000) in your browser to see the website.
-
-4. **Build for production**:
-   ```bash
-   npm run build
-   npm start
-   ```
-
-## Project Structure
-
-```
-my-website/
-├── app/                    # Next.js App Router pages
-│   ├── layout.tsx         # Root layout with theme provider
-│   ├── page.tsx           # Home page
-│   ├── about/             # About page
-│   ├── blog/              # Blog listing and posts
-│   ├── contact/           # Contact page
-│   └── projects/          # Projects page
-├── components/            # Reusable components
-│   ├── Header.tsx         # Navigation header
-│   └── Footer.tsx         # Site footer
-├── content/               # Content files
-│   └── blog/              # MDX blog posts
-├── data/                  # Static data files
-│   └── projects.json      # Projects data
-├── public/                # Static assets (add images here)
-└── styles/               # Additional stylesheets
+npm install
 ```
 
-## Customization
+### 2. Set up Supabase
 
-### Adding Projects
-Edit `data/projects.json` to add new projects:
+1. Create a free account at [supabase.com](https://supabase.com)
+2. Create a new project
+3. Copy your project URL and anon key to `.env.local`:
 
-```json
-{
-  "id": 7,
-  "title": "Your Project",
-  "description": "Project description",
-  "image": "/images/project.jpg",
-  "demo": "https://your-demo-link.com",
-  "github": "https://github.com/yourusername/project",
-  "tags": ["Tech1", "Tech2"]
-}
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-### Writing Blog Posts
-Create new `.mdx` files in `content/blog/`. Use this frontmatter format:
+4. Run the database setup SQL (see below)
+5. Enable authentication in Supabase
 
-```markdown
----
-title: "Your Blog Post Title"
-date: "2023-11-18"
-tags: ["tag1", "tag2"]
----
+### 3. Run the Development Server
 
-# Your content here...
-
-Use standard Markdown with JSX components if needed.
+```bash
+npm run dev
 ```
 
-### Styling
-- Colors and theme variables can be customized in `tailwind.config.js`
-- Global styles are in `app/globals.css`
-- Component-specific styles are inline with Tailwind classes
+Open [http://localhost:3000](http://localhost:3000) for the frontend
+Open [http://localhost:3000/admin](http://localhost:3000/admin) for the admin panel
+
+### 4. Create Admin User
+
+Go to Supabase Authentication → Users and create an admin account, then log in at `/admin/login`.
+
+## Database Schema
+
+Run this SQL in your Supabase SQL editor:
+
+```sql
+-- Projects table
+CREATE TABLE projects (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  image_url TEXT,
+  demo_url TEXT,
+  github_url TEXT,
+  tags JSONB,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Blog posts table
+CREATE TABLE blog_posts (
+  id SERIAL PRIMARY KEY,
+  slug VARCHAR(255) UNIQUE NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  content TEXT,
+  excerpt TEXT,
+  tags JSONB,
+  published_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Contact submissions
+CREATE TABLE contact_submissions (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  message TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Enable Row Level Security
+ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE contact_submissions ENABLE ROW LEVEL SECURITY;
+
+-- Create policies for authenticated users (admins only)
+CREATE POLICY "Enable all operations for authenticated users" ON projects
+  FOR ALL USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Enable all operations for authenticated users" ON blog_posts
+  FOR ALL USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Enable insert for everyone on contact submissions" ON contact_submissions
+  FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Enable select for authenticated users on contact submissions" ON contact_submissions
+  FOR SELECT USING (auth.role() = 'authenticated');
+```
+
+## Admin Panel Features
+
+- **Dashboard**: Overview of projects, posts, and submissions
+- **Projects Management**: Add, edit, delete projects with image uploads
+- **Blog Management**: Create and edit blog posts with rich text
+- **Media Library**: Upload and manage images
+- **Contact Submissions**: View messages from visitors
+
+## File Structure
+
+```
+portfolio-website/
+├── app/
+│   ├── admin/                 # Admin panel pages
+│   │   ├── projects/         # Project CRUD
+│   │   ├── blog/             # Blog post CRUD
+│   │   ├── uploads/          # Media library
+│   │   └── dashboard/        # Admin dashboard
+│   ├── api/                  # API routes
+│   ├── projects/             # Public project pages
+│   ├── blog/                 # Public blog pages
+│   ├── contact/              # Contact form
+│   └── about/                # About page
+├── components/               # Reusable UI components
+├── lib/                      # Utility functions
+├── types/                    # TypeScript types
+└── styles/                   # CSS files
+```
+
+## Technologies Used
+
+- **Frontend**: Next.js 14, TypeScript, Tailwind CSS
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth
+- **File Storage**: Supabase Storage
+- **Image Optimization**: Next.js Image component
+- **Forms**: React Hook Form
+- **UI Components**: Custom components with Lucide icons
+
+## Development
+
+### Local Development
+```bash
+npm run dev
+```
+
+### Build for Production
+```bash
+npm run build
+npm start
+```
+
+### Database Migrations
+Use Supabase dashboard or CLI for database changes.
 
 ## Deployment
 
-This site can be deployed to:
-- **Vercel** (recommended for Next.js)
-- **Netlify**
-- **GitHub Pages** (with static export)
-
-For Vercel deployment, simply push to a GitHub repo and connect it to Vercel.
+This app is optimized for Vercel deployment. Connect your repository and it will automatically deploy on pushes to main.
 
 ## License
 
-This project is open source. Feel free to use it as a template for your own portfolio.
-
-## Sample Content
-
-The website comes with sample content including:
-- 6 sample projects
-- 1 sample blog post
-- Placeholder images (gray backgrounds)
-- Demo text that you can replace with your own
-
-Replace all placeholder content with your actual information, images, and links.
+Open source, feel free to use for your portfolio.
