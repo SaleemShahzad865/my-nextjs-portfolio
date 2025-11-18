@@ -1,4 +1,4 @@
-import { MDXRemote } from '@next/mdx/remote'
+import { MDXRemote } from '@next/mdx-remote'
 import matter from 'gray-matter'
 import { readFileSync } from 'fs'
 import { join } from 'path'
