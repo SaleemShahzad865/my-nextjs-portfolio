@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "title": "E-commerce Platform",
+    "description": "A full-featured e-commerce website built with Next.js, featuring shopping cart, payment integration, and admin dashboard.",
+    "image": "/images/project1.jpg",
+    "demo": "https://demo.com",
+    "github": "https://github.com/yourusername/ecommerce",
+    "tags": ["Next.js", "Stripe", "MongoDB", "Tailwind CSS"]
+  },
+  {
+    "id": 2,
+    "title": "Task Management App",
+    "description": "A collaborative task management application with real-time updates, team sharing, and progress tracking.",
+    "image": "/images/project2.jpg",
+    "demo": "https://demo.com",
+    "github": "https://github.com/yourusername/taskapp",
+    "tags": ["React", "Node.js", "Socket.io", "PostgreSQL"]
+  },
+  {
+    "id": 3,
+    "title": "Weather Dashboard",
+    "description": "A responsive weather dashboard with location-based forecasts, interactive maps, and historical data visualization.",
+    "image": "/images/project3.jpg",
+    "demo": "https://demo.com",
+    "github": "https://github.com/yourusername/weather",
+    "tags": ["Vue.js", "Chart.js", "OpenWeatherMap API", "CSS Grid"]
+  },
+  {
+    "id": 4,
+    "title": "Personal Blog",
+    "description": "A modern blog platform with markdown support, SEO optimization, and automatic RSS feed generation.",
+    "image": "/images/project4.jpg",
+    "demo": "https://demo.com",
+    "github": "https://github.com/yourusername/blog",
+    "tags": ["Gatsby", "Markdown", "GraphQL", "Netlify"]
+  },
+  {
+    "id": 5,
+    "title": "Fitness Tracker",
+    "description": "A mobile-first fitness tracking app with workout logging, progress charts, and social features.",
+    "image": "/images/project5.jpg",
+    "demo": "https://demo.com",
+    "github": "https://github.com/yourusername/fitness",
+    "tags": ["React Native", "Firebase", "Expo", "TypeScript"]
+  },
+  {
+    "id": 6,
+    "title": "Portfolio Website",
+    "description": "A beautiful, responsive portfolio website showcasing projects with smooth animations and dark mode support.",
+    "image": "/images/project6.jpg",
+    "demo": "https://demo.com",
+    "github": "https://github.com/yourusername/portfolio",
+    "tags": ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"]
+  }
+]
