@@ -17,7 +17,7 @@ export default function About() {
           <p className="text-xl text-gray-600 dark:text-gray-300">
             Passionate developer creating digital experiences
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
@@ -41,12 +41,7 @@ export default function About() {
           </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mb-12"
-        >
+            <div className="mb-12">
           <h2 className="text-3xl font-bold text-center mb-8">Skills & Technologies</h2>
           <div className="grid md:grid-cols-4 gap-8">
             <div className="text-center">
@@ -90,7 +85,7 @@ export default function About() {
               </ul>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         <div className="text-center">
           <button className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">

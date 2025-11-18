@@ -1,6 +1,3 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, Download } from 'lucide-react'
 
@@ -11,27 +8,17 @@ export default function Home() {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-8"
-            >
-              <div className="w-32 h-32 mx-auto mb-6 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+            <div className="mb-8">
+              <div className="w-32 h-32 mx-auto mb-6 bg-gray-200 rounded-full"></div>
               <h1 className="text-4xl sm:text-6xl font-bold mb-4">
-                Hi, I'm <span className="text-blue-600 dark:text-blue-400">Your Name</span>
+                Hi, I'm <span className="text-blue-600">Your Name</span>
               </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
                 Full Stack Developer passionate about creating amazing web experiences
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-            >
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 href="/projects"
                 className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -43,7 +30,7 @@ export default function Home() {
                 Download Resume
                 <Download className="ml-2 h-5 w-5" />
               </button>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
