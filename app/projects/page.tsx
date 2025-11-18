@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ExternalLink, Github } from 'lucide-react'
-import projectsData from '@/data/projects.json'
 
 interface Project {
   id: number
@@ -14,6 +13,8 @@ interface Project {
   github: string
   tags: string[]
 }
+
+const projectsData = require('../../data/projects.json')
 
 export default function Projects() {
   const projects: Project[] = projectsData
