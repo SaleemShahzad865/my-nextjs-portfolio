@@ -9,6 +9,38 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Check if Supabase is configured
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseKey || supabaseUrl === 'your_supabase_project_url_here') {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-center mb-4">Admin Panel Setup Required</h2>
+          <p className="text-gray-600 mb-6">
+            The admin panel requires Supabase configuration to work.
+          </p>
+          <div className="space-y-3">
+            <p>⚠️ <strong>To enable admin functionality:</strong></p>
+            <ol className="list-decimal ml-4 space-y-2 text-sm text-gray-700">
+              <li>Create a free account at <a href="https://supabase.com" className="text-blue-600 underline" target="_blank">supabase.com</a></li>
+              <li>Create a new project</li>
+              <li>Copy your URL and anon key to <code className="bg-gray-100 px-2 py-1 rounded">.env.local</code></li>
+              <li>Run the database schema from README.md</li>
+            </ol>
+          </div>
+          <div className="mt-6 pt-6 border-t">
+            <p className="text-sm text-gray-500 mb-4">Preview mode - main portfolio still works!</p>
+            <a href="/" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+              View Public Portfolio →
+            </a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const supabase = createServerComponentClient({ cookies })
   const { data: { session } } = await supabase.auth.getSession()
 
