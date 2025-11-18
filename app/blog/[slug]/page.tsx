@@ -1,4 +1,5 @@
-import { MDXRemote } from '@next/mdx-remote'
+import { serialize } from 'next-mdx-remote/serialize'
+import { MDXRemote } from 'next-mdx-remote'
 import matter from 'gray-matter'
 import { readFileSync } from 'fs'
 import { join } from 'path'
@@ -22,6 +23,8 @@ export default async function BlogPost({ params }: PageProps) {
     const fullPath = join(postsDirectory, `${params.slug}.mdx`)
     const fileContents = readFileSync(fullPath, 'utf8')
     const { data, content } = matter(fileContents)
+
+    const mdxSource = await serialize(content)
 
     return (
       <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -49,7 +52,7 @@ export default async function BlogPost({ params }: PageProps) {
               </p>
             </div>
 
-            <MDXRemote source={content} />
+            <MDXRemote {...mdxSource} />
           </article>
         </div>
       </div>
